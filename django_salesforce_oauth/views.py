@@ -16,6 +16,9 @@ CALLBACK_ERROR_MESSAGE = (
 
 
 def oauth(request):
+    """
+    View for initiating OAuth with Salesforce
+    """
     domain = get_salesforce_domain()
     url = f"https://{domain}.salesforce.com/services/oauth2/authorize"
 
@@ -33,6 +36,9 @@ def oauth(request):
 
 
 def oauth_callback(request):
+    """
+    View behind the callback URI provided to Salesforce
+    """
     domain = get_salesforce_domain()
     url = f"https://{domain}.salesforce.com/services/oauth2/token"
 

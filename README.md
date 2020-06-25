@@ -20,10 +20,12 @@ INSTALLED_APPS = [
 Add the following required variables to your `settings.py`:
 
 ```python
-SCOPES = "YOUR SCOPES" # space delimited, e.g., "id api refresh_token"
-OAUTH_REDIRECT_URI = "YOUR REDIRECT URI"
+SCOPES = "YOUR SCOPES"  # space delimited, e.g., "id api refresh_token"
 SFDC_CONSUMER_KEY = "YOUR KEY"
 SFDC_CONSUMER_SECRET = "YOUR SECRET"
+# this must match the view behind the pattern 'oauth-callback', unless
+# you've customized this URL yourself
+OAUTH_REDIRECT_URI = "YOUR REDIRECT URI"  # example https://localhost:5000/oauth/callback/
 
 # Optional, but Django provides a default you likely don't want
 LOGIN_REDIRECT_URL = "/"
@@ -79,6 +81,23 @@ CUSTOM_CALLBACK = "path.to.module.your_callback_function"
 If you do not redirect from within `your_callback_function`, it's expected it will return
 a user object. In this case the user will then be signed in and redirected to
 `settings.LOGIN_REDIRECT_URL` (which you'll most likely want to set in your `settings.py`).
+
+### Customizing the callback URI
+
+By default the view behind the `oauth-callback` namespace, specified in the `django_salesforce_oauth`'s app's `urls.py` is what needs to match `settings.OAUTH_REDIRECT_URI`.
+But this can be customized by pointing it to some other url and registering the view wherever
+you'd like it declared.
+
+```python
+# urls.py
+
+# you could also do the same for the login view
+from django_salesforce_oauth.views import oauth, oauth_callback
+
+urlpatterns = [
+    # ...
+    path("my/custom/url", oauth_callback, name="custom-oauth-callback"),
+```
 
 ## Salesforce sandbox
 

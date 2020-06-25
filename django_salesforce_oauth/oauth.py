@@ -23,6 +23,9 @@ class OAuth:
 
     @property
     def password(self):
+        """
+        Not intended to be used other than to feed to the Django user table
+        """
         return self._password
 
     @property
