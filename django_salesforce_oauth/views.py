@@ -7,8 +7,8 @@ from django.contrib import messages
 from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.db.utils import IntegrityError
-from django.utils.crypto import get_random_string
 
+from django_salesforce_oauth.oauth import OAuth
 from django_salesforce_oauth.utils import get_salesforce_domain
 
 
@@ -48,27 +48,18 @@ def oauth_callback(request: HttpRequest):
     }
     response = requests.post(url, data)
 
-    token_data = response.json()
+    oauth = OAuth(response.json())
 
-    sf_id_url = token_data.get("id")
-    access_token = token_data.get("access_token")
-    response = requests.get(
-        sf_id_url, headers={"Authorization": f"Bearer {access_token}"}
-    )
-    salesforce_user_data = response.json()
+    username = oauth.username
+    email = oauth.email
+    password = oauth.password
 
-    username = salesforce_user_data.get("username")
-    email = salesforce_user_data.get("email")
-    # make a random password. We won't use it
-    password = get_random_string(length=16)
-    organization_id = salesforce_user_data.get("organization_id")
-
-    User = get_user_model()
+    UserModel = get_user_model()
 
     try:
-        user = User.objects.create_user(username, email, password)
+        user = UserModel.objects.create_user(username, email, password)
     except IntegrityError:
-        user = User.objects.get(username=username, email=email)
+        user = UserModel.objects.get(username=username, email=email)
 
     login(request, user)
 
