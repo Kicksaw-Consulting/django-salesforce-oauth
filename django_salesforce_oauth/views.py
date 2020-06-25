@@ -4,15 +4,18 @@ import urllib
 from django.conf import settings
 from django.contrib.auth import get_user_model, login
 from django.contrib import messages
-from django.http import HttpRequest
 from django.shortcuts import redirect, render
-from django.db.utils import IntegrityError
+from django.utils.module_loading import import_string
 
 from django_salesforce_oauth.oauth import OAuth
-from django_salesforce_oauth.utils import get_salesforce_domain
+from django_salesforce_oauth.utils import get_salesforce_domain, get_or_create_user
+
+CALLBACK_ERROR_MESSAGE = (
+    "Please return a valid user object or provide your own redirect for CUSTOM_CALLBACK"
+)
 
 
-def oauth(request: HttpRequest):
+def oauth(request):
     domain = get_salesforce_domain()
     url = f"https://{domain}.salesforce.com/services/oauth2/authorize"
 
@@ -29,7 +32,7 @@ def oauth(request: HttpRequest):
     return redirect(url)
 
 
-def oauth_callback(request: HttpRequest):
+def oauth_callback(request):
     domain = get_salesforce_domain()
     url = f"https://{domain}.salesforce.com/services/oauth2/token"
 
@@ -50,16 +53,12 @@ def oauth_callback(request: HttpRequest):
 
     oauth = OAuth(response.json())
 
-    username = oauth.username
-    email = oauth.email
-    password = oauth.password
-
-    UserModel = get_user_model()
-
-    try:
-        user = UserModel.objects.create_user(username, email, password)
-    except IntegrityError:
-        user = UserModel.objects.get(username=username, email=email)
+    if hasattr(settings, "CUSTOM_CALLBACK"):
+        custom_callback = import_string(settings.CUSTOM_CALLBACK)
+        user = custom_callback(request, oauth)
+        assert type(user) == get_user_model(), CALLBACK_ERROR_MESSAGE
+    else:
+        user = get_or_create_user(oauth)
 
     login(request, user)
 

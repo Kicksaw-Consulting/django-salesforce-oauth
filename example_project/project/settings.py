@@ -1,5 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = "yq#l7#8h@!u)l-ow%=%n#$v@cuc)@1)k_glr)90@nr0*3fgp_3"
@@ -86,10 +90,6 @@ LOGOUT_REDIRECT_URL = "/"
 # django_salesforce_oauth
 SCOPES = "id api refresh_token"
 OAUTH_REDIRECT_URI = "https://localhost:5000/oauth/callback/"
-
-from dotenv import load_dotenv
-
-load_dotenv()
-
 SFDC_CONSUMER_KEY = os.getenv("SFDC_CONSUMER_KEY")
 SFDC_CONSUMER_SECRET = os.getenv("SFDC_CONSUMER_SECRET")
+CUSTOM_CALLBACK = "frontend.callback.oauth_callback"
