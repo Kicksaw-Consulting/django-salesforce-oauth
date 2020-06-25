@@ -28,10 +28,10 @@
     <div class="container pt-5">
       {% if user.is_authenticated %}
       <p>You're now signed in using your Salesforce creds!</p>
-      <a href="" class="btn btn-primary">Logout</a>
+      <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
       {% else %}
       <p>Press me, and I'll take you to Salesforce!</p>
-      <a href="" class="btn btn-primary">Login</a>
+      <a href="{% url 'oauth' %}" class="btn btn-primary">Login</a>
       {% endif %}
     </div>
   </body>
