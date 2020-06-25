@@ -9,9 +9,11 @@ from django.shortcuts import redirect, render
 from django.db.utils import IntegrityError
 from django.utils.crypto import get_random_string
 
+from django_salesforce_oauth.utils import get_salesforce_domain
+
 
 def oauth(request: HttpRequest):
-    domain = "test" if settings.USE_SANDBOX else "login"
+    domain = get_salesforce_domain()
     url = f"https://{domain}.salesforce.com/services/oauth2/authorize"
 
     url_args = {
@@ -28,7 +30,7 @@ def oauth(request: HttpRequest):
 
 
 def oauth_callback(request: HttpRequest):
-    domain = "test" if settings.USE_SANDBOX else "login"
+    domain = get_salesforce_domain()
     url = f"https://{domain}.salesforce.com/services/oauth2/token"
 
     code = request.GET.get("code")
