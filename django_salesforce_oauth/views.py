@@ -64,4 +64,4 @@ def oauth_callback(request):
 
     messages.info(request, "Authentication with Salesforce successful!")
 
-    return redirect("index")
+    return redirect(settings.LOGIN_REDIRECT_URL)
