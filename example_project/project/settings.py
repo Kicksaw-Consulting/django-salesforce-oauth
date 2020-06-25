@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_salesforce_oauth",
+    "django_extensions",
     "frontend",
 ]
 
@@ -76,3 +77,15 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+
+# django_salesforce_oauth
+SCOPES = "id api refresh_token"
+OAUTH_REDIRECT_URI = "https://localhost:5000/oauth/callback/"
+USE_SANDBOX = False
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SFDC_CONSUMER_KEY = os.getenv("SFDC_CONSUMER_KEY")
+SFDC_CONSUMER_SECRET = os.getenv("SFDC_CONSUMER_SECRET")

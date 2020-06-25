@@ -47,8 +47,13 @@ def oauth_callback(request: HttpRequest):
 
     token_data = response.json()
 
+    from pprint import pprint
+
+    pprint(token_data)
+
     sf_id_url = token_data.get("id")
     access_token = token_data.get("access_token")
+    print(sf_id_url)
     response = requests.get(
         sf_id_url, headers={"Authorization": f"Bearer {access_token}"}
     )
