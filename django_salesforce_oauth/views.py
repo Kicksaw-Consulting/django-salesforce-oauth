@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model, login
 from django.contrib import messages
 from django.http import HttpRequest
 from django.shortcuts import redirect, render
+from django.db.utils import IntegrityError
 from django.utils.crypto import get_random_string
 
 

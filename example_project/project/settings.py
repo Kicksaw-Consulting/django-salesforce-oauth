@@ -78,6 +78,11 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+# Auth
+LOGIN_URL = "/oauth/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
 # django_salesforce_oauth
 SCOPES = "id api refresh_token"
 OAUTH_REDIRECT_URI = "https://localhost:5000/oauth/callback/"
