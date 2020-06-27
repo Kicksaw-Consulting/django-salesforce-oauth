@@ -15,6 +15,7 @@ Add the app to your `INSTALLED_APPS` in your django settings (`settings.py`):
 INSTALLED_APPS = [
     # ...
     "django_salesforce_oauth",
+]
 ```
 
 Add the following required variables to your `settings.py`:
@@ -23,9 +24,7 @@ Add the following required variables to your `settings.py`:
 SCOPES = "YOUR SCOPES"  # space delimited, e.g., "id api refresh_token"
 SFDC_CONSUMER_KEY = "YOUR KEY"
 SFDC_CONSUMER_SECRET = "YOUR SECRET"
-# this must match the view behind the pattern 'oauth-callback', unless
-# you've customized this URL yourself
-OAUTH_REDIRECT_URI = "YOUR REDIRECT URI"  # example https://localhost:5000/oauth/callback/
+OAUTH_REDIRECT_URI = "{YOUR DOMAIN}/oauth/callback/"
 
 # Optional, but Django provides a default you likely don't want
 LOGIN_REDIRECT_URL = "/"
@@ -78,7 +77,7 @@ CUSTOM_CALLBACK = "path.to.module.your_callback_function"
 1. the request object (useful in case you want to handle redirection yourself)
 2. the OAuth object (contains all token and user data)
 
-If you do not redirect from within `your_callback_function`, it's expected it will return
+If you do not return redirect from `your_callback_function`, it's expected it will return
 a user object. In this case the user will then be signed in and redirected to
 `settings.LOGIN_REDIRECT_URL` (which you'll most likely want to set in your `settings.py`).
 
@@ -91,12 +90,12 @@ you'd like it declared.
 ```python
 # urls.py
 
-# you could also do the same for the login view
-from django_salesforce_oauth.views import oauth, oauth_callback
+from django_salesforce_oauth.views import oauth_callback
 
 urlpatterns = [
     # ...
     path("my/custom/url", oauth_callback, name="custom-oauth-callback"),
+]
 ```
 
 ## Salesforce sandbox
@@ -110,12 +109,12 @@ USE_SANBOX = True
 
 # Example project
 
-The example project should provide a full example of how to use this package,
-but since it's an integration, there's several steps to actually running it.
+The example project provides a full example of how to use this package,
+but since it's an integration, there's a few steps to actually running it.
 
 ## HTTPS
 
-Salesforce only accepts HTTPS urls for its callback urls, so you can't test with
+Salesforce only accepts HTTPS for its callback urls, so you can't test with
 `http://localhost:8000` unfortunately.
 
 You can use `makecert` combined with `django-extensions` to run `runserver` on HTTPS.
