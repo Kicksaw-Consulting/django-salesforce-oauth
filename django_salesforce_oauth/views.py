@@ -4,15 +4,14 @@ import urllib
 from django.conf import settings
 from django.contrib.auth import get_user_model, login
 from django.contrib import messages
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.utils.module_loading import import_string
 
 from django_salesforce_oauth.oauth import OAuth
 from django_salesforce_oauth.utils import get_salesforce_domain, get_or_create_user
 
-CALLBACK_ERROR_MESSAGE = (
-    "Please return a valid user object or provide your own redirect for CUSTOM_CALLBACK"
-)
+CALLBACK_ERROR_MESSAGE = "CUSTOM_CALLBACK must return a user object or a redirect"
 
 
 def oauth(request):
@@ -61,8 +60,14 @@ def oauth_callback(request):
 
     if hasattr(settings, "CUSTOM_CALLBACK"):
         custom_callback = import_string(settings.CUSTOM_CALLBACK)
-        user = custom_callback(request, oauth)
-        assert type(user) == get_user_model(), CALLBACK_ERROR_MESSAGE
+        response = custom_callback(request, oauth)
+        is_user = type(response) == get_user_model()
+        is_redirect = type(response) == HttpResponseRedirect
+        assert is_user or is_redirect, CALLBACK_ERROR_MESSAGE
+        if is_redirect:
+            return response
+        else:
+            user = response
     else:
         user = get_or_create_user(oauth)
 
