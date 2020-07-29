@@ -20,12 +20,10 @@ def get_or_create_user(oauth):
     return user
 
 
-def get_salesforce_domain():
-    """
-    Checks to see if the project has defined the USE_SANDBOX
-    variable, and uses the sandbox Salesforce domain if set to True
-    Otherwise, defaults to using the production Salesforce domain
-    """
-    if hasattr(settings, "USE_SANDBOX") and settings.USE_SANDBOX:
-        return "test"
-    return "login"
+def get_redirect_uri(domain):
+    assert domain in ["login", "test"], f"Invalid salesforce domain"
+    return (
+        settings.OAUTH_REDIRECT_URI
+        if domain == "login"
+        else settings.OAUTH_SANDBOX_REDIRECT_URI
+    )

@@ -25,6 +25,7 @@ SCOPES = "YOUR SCOPES"  # space delimited, e.g., "id api refresh_token"
 SFDC_CONSUMER_KEY = "YOUR KEY"
 SFDC_CONSUMER_SECRET = "YOUR SECRET"
 OAUTH_REDIRECT_URI = "{YOUR DOMAIN}/oauth/callback/"
+OAUTH_SANDBOX_REDIRECT_URI = "{YOUR DOMAIN}/oauth/callback/sandbox/" # optional
 
 # Optional, but Django provides a default you likely don't want
 LOGIN_REDIRECT_URL = "/"
@@ -51,7 +52,7 @@ Then redirect sign-in requests to the `oauth` namespace.
 from django.shortcuts import redirect
 
 def your_view(request):
-    return redirect("oauth")
+    return redirect("oauth")  # or "oauth-sandbox"
 ```
 
 ### Template example
@@ -94,17 +95,9 @@ from django_salesforce_oauth.views import oauth_callback
 
 urlpatterns = [
     # ...
-    path("my/custom/url", oauth_callback, name="custom-oauth-callback"),
+    # pass {"domain": "test"} to use a sandbox
+    path("my/custom/url", oauth_callback, {"domain": "login"}, name="custom-oauth-callback"),
 ]
-```
-
-## Salesforce sandbox
-
-You can also authenticate with a Salesforce sandbox insteace by setting the following
-variable in your `settings.py` to `True`.
-
-```python
-USE_SANBOX = True
 ```
 
 # Example project
