@@ -25,7 +25,6 @@ SCOPES = "YOUR SCOPES"  # space delimited, e.g., "id api refresh_token"
 SFDC_CONSUMER_KEY = "YOUR KEY"
 SFDC_CONSUMER_SECRET = "YOUR SECRET"
 OAUTH_REDIRECT_URI = "{YOUR DOMAIN}/oauth/callback/"
-OAUTH_SANDBOX_REDIRECT_URI = "{YOUR DOMAIN}/oauth/callback/sandbox/" # optional
 
 # Optional, but Django provides a default you likely don't want
 LOGIN_REDIRECT_URL = "/"
@@ -65,9 +64,8 @@ def your_view(request):
 
 ## Custom callback
 
-You likely will want to customize what happens after the OAuth flow is complete, instead of simply
-getting or creating a user. This can be done by specifying the following in your
-`settings.py`.
+You likely will want to customize what happens after the OAuth flow is complete instead of simply
+getting or creating a user. This can be done by specifying the following in your `settings.py`.
 
 ```python
 CUSTOM_CALLBACK = "path.to.module.your_callback_function"

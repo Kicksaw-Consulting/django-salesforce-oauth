@@ -90,7 +90,6 @@ LOGOUT_REDIRECT_URL = "/"
 # django_salesforce_oauth
 SCOPES = "id api refresh_token"
 OAUTH_REDIRECT_URI = "https://localhost:5000/oauth/callback/"
-OAUTH_SANDBOX_REDIRECT_URI = "https://localhost:5000/oauth/callback/sandbox/"
 SFDC_CONSUMER_KEY = os.getenv("SFDC_CONSUMER_KEY")
 SFDC_CONSUMER_SECRET = os.getenv("SFDC_CONSUMER_SECRET")
 CUSTOM_CALLBACK = "frontend.callback.oauth_callback"

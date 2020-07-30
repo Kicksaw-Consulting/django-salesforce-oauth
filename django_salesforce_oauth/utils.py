@@ -18,12 +18,3 @@ def get_or_create_user(oauth):
     except IntegrityError:
         user = UserModel.objects.get(username=username, email=email)
     return user
-
-
-def get_redirect_uri(domain):
-    assert domain in ["login", "test"], f"Invalid salesforce domain"
-    return (
-        settings.OAUTH_REDIRECT_URI
-        if domain == "login"
-        else settings.OAUTH_SANDBOX_REDIRECT_URI
-    )
