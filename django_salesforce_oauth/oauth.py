@@ -18,6 +18,18 @@ class OAuth:
         return response.json()
 
     @property
+    def id(self):
+        return self.salesforce_user.get("user_id")
+
+    @property
+    def first_name(self):
+        return self.salesforce_user.get("first_name")
+
+    @property
+    def last_name(self):
+        return self.salesforce_user.get("last_name")
+
+    @property
     def username(self):
         return self.salesforce_user.get("username")
 
@@ -31,3 +43,15 @@ class OAuth:
     @property
     def email(self):
         return self.salesforce_user.get("email")
+
+    @property
+    def access_token(self):
+        return self.token_data.get("access_token")
+    
+    @property
+    def refresh_token(self):
+        return self.token_data.get("refresh_token")
+
+    @property
+    def instance_url(self):
+        return self.token_data.get("instance_url")
