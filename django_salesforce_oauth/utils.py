@@ -18,14 +18,3 @@ def get_or_create_user(oauth):
     except IntegrityError:
         user = UserModel.objects.get(username=username, email=email)
     return user
-
-
-def get_salesforce_domain():
-    """
-    Checks to see if the project has defined the USE_SANDBOX
-    variable, and uses the sandbox Salesforce domain if set to True
-    Otherwise, defaults to using the production Salesforce domain
-    """
-    if hasattr(settings, "USE_SANDBOX") and settings.USE_SANDBOX:
-        return "test"
-    return "login"

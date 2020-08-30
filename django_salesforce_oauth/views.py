@@ -5,20 +5,19 @@ from django.conf import settings
 from django.contrib.auth import get_user_model, login
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.utils.module_loading import import_string
 
 from django_salesforce_oauth.oauth import OAuth
-from django_salesforce_oauth.utils import get_salesforce_domain, get_or_create_user
+from django_salesforce_oauth.utils import get_or_create_user
 
 CALLBACK_ERROR_MESSAGE = "CUSTOM_CALLBACK must return a user object or a redirect"
 
 
-def oauth(request):
+def oauth(request, domain="login"):
     """
     View for initiating OAuth with Salesforce
     """
-    domain = get_salesforce_domain()
     url = f"https://{domain}.salesforce.com/services/oauth2/authorize"
 
     url_args = {
@@ -26,6 +25,7 @@ def oauth(request):
         "response_type": "code",
         "redirect_uri": settings.OAUTH_REDIRECT_URI,
         "scope": settings.SCOPES,
+        "state": domain,
     }
     args = urllib.parse.urlencode(url_args)
 
@@ -38,10 +38,10 @@ def oauth_callback(request):
     """
     View behind the callback URI provided to Salesforce
     """
-    domain = get_salesforce_domain()
-    url = f"https://{domain}.salesforce.com/services/oauth2/token"
-
     code = request.GET.get("code")
+    state = request.GET.get("state")
+
+    url = f"https://{state}.salesforce.com/services/oauth2/token"
 
     if not code:
         messages.error(request, "Unable to authenticate with Salesforce")

@@ -51,7 +51,7 @@ Then redirect sign-in requests to the `oauth` namespace.
 from django.shortcuts import redirect
 
 def your_view(request):
-    return redirect("oauth")
+    return redirect("oauth")  # or "oauth-sandbox"
 ```
 
 ### Template example
@@ -64,9 +64,8 @@ def your_view(request):
 
 ## Custom callback
 
-You likely will want to customize what happens after the OAuth flow is complete, instead of simply
-getting or creating a user. This can be done by specifying the following in your
-`settings.py`.
+You likely will want to customize what happens after the OAuth flow is complete instead of simply
+getting or creating a user. This can be done by specifying the following in your `settings.py`.
 
 ```python
 CUSTOM_CALLBACK = "path.to.module.your_callback_function"
@@ -94,17 +93,9 @@ from django_salesforce_oauth.views import oauth_callback
 
 urlpatterns = [
     # ...
-    path("my/custom/url", oauth_callback, name="custom-oauth-callback"),
+    # pass {"domain": "test"} to use a sandbox
+    path("my/custom/url", oauth_callback, {"domain": "login"}, name="custom-oauth-callback"),
 ]
-```
-
-## Salesforce sandbox
-
-You can also authenticate with a Salesforce sandbox insteace by setting the following
-variable in your `settings.py` to `True`.
-
-```python
-USE_SANBOX = True
 ```
 
 # Example project
