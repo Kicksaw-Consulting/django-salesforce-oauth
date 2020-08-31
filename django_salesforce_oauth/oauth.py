@@ -34,15 +34,16 @@ class OAuth:
         return self.salesforce_user.get("username")
 
     @property
-    def password(self):
-        """
-        Not intended to be used other than to feed to the Django user table
-        """
-        return self._password
-
-    @property
     def email(self):
         return self.salesforce_user.get("email")
+
+    @property
+    def organization_id(self):
+        return self.salesforce_user.get("organization_id")
+
+    @property
+    def instance_url(self):
+        return self.token_data.get("instance_url")
 
     @property
     def access_token(self):
@@ -53,5 +54,8 @@ class OAuth:
         return self.token_data.get("refresh_token")
 
     @property
-    def instance_url(self):
-        return self.token_data.get("instance_url")
+    def password(self):
+        """
+        Not intended to be used other than to feed to the Django user table
+        """
+        return self._password
