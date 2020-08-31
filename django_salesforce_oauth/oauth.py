@@ -6,7 +6,7 @@ from django.utils.crypto import get_random_string
 class OAuth:
     def __init__(self, token_data):
         self.token_data = token_data
-        self.salesforce_user = self._get_salesforce_user()
+        self._salesforce_user = None
         self._password = get_random_string(length=16)
 
     def _get_salesforce_user(self):
@@ -16,6 +16,12 @@ class OAuth:
             sf_id_url, headers={"Authorization": f"Bearer {access_token}"}
         )
         return response.json()
+    
+    @property
+    def salesforce_user(self):
+        if not self._salesforce_user:
+            self._salesforce_user = self._get_salesforce_user()
+        return self._salesforce_user
 
     @property
     def id(self):
