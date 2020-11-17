@@ -103,19 +103,14 @@ urlpatterns = [
 The example project provides a full example of how to use this package,
 but since it's an integration, there's a few steps to actually running it.
 
-## HTTPS
+## SFDC
 
-Salesforce only accepts HTTPS for its callback urls, so you can't test with
-`http://localhost:8000` unfortunately.
-
-You can use `makecert` combined with `django-extensions` to run `runserver` on HTTPS.
-There's an example in the `bin` folder.
-
-`ngrok` is another alternative for HTTPS tunneling to your localhost.
+Configure a SFDC OAuth app with which you can OAuth against.
 
 ## .env
 
-Place a `.env` file inside the `project` folder that contains the following:
+Place a `.env` file inside the `project` folder that contains the following keys
+from the OAuth app you configured above:
 
 ```
 SFDC_CONSUMER_KEY=some_key
