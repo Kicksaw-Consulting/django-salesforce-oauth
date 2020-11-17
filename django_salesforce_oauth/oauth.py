@@ -1,5 +1,4 @@
 import requests
-
 from django.utils.crypto import get_random_string
 
 
@@ -15,6 +14,9 @@ class OAuth:
         response = requests.get(
             sf_id_url, headers={"Authorization": f"Bearer {access_token}"}
         )
+        
+        assert response.status_code == 200, f"Could not retrieve user from Salesforce: {response.reason}"
+
         return response.json()
     
     @property
