@@ -76,13 +76,13 @@ CUSTOM_CALLBACK = "path.to.module.your_callback_function"
 1. the request object (useful in case you want to handle redirection yourself)
 2. the OAuth object (contains all token and user data)
 
-If you do not return redirect from `your_callback_function`, it's expected it will return
+If you do not return a redirect from `your_callback_function`, it's expected it will return
 a user object. In this case the user will then be signed in and redirected to
 `settings.LOGIN_REDIRECT_URL` (which you'll most likely want to set in your `settings.py`).
 
 ### Customizing the callback URI
 
-By default the view behind the `oauth-callback` namespace, specified in the `django_salesforce_oauth`'s app's `urls.py` is what needs to match `settings.OAUTH_REDIRECT_URI`.
+By default the view behind the `oauth-callback` namespace, specified in the `django_salesforce_oauth`'s app's `urls.py`, is what needs to match `settings.OAUTH_REDIRECT_URI`.
 But this can be customized by pointing it to some other url and registering the view wherever
 you'd like it declared.
 
