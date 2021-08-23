@@ -19,9 +19,6 @@ requests = "^2.24.0"
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 black = "^19.10b0"
-pyOpenSSL = "^19.1.0"
-django-extensions = "^2.2.9"
-werkzeug = "^1.0.1"
 python-dotenv = "^0.13.0"
 
 [build-system]

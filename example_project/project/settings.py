@@ -20,7 +20,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_salesforce_oauth",
-    "django_extensions",
     "frontend",
 ]
 
@@ -88,7 +87,7 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 # django_salesforce_oauth
-SCOPES = "id api refresh_token"
+SCOPES = "id refresh_token"
 OAUTH_REDIRECT_URI = "http://localhost:8000/oauth/callback/"
 SFDC_CONSUMER_KEY = os.getenv("SFDC_CONSUMER_KEY")
 SFDC_CONSUMER_SECRET = os.getenv("SFDC_CONSUMER_SECRET")

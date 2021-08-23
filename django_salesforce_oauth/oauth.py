@@ -14,11 +14,12 @@ class OAuth:
         response = requests.get(
             sf_id_url, headers={"Authorization": f"Bearer {access_token}"}
         )
-        
-        assert response.status_code == 200, f"Could not retrieve user from Salesforce: {response.reason}"
 
+        assert (
+            response.status_code == 200
+        ), f"Could not retrieve user from Salesforce: {response.reason}"
         return response.json()
-    
+
     @property
     def salesforce_user(self):
         if not self._salesforce_user:
@@ -56,7 +57,7 @@ class OAuth:
     @property
     def access_token(self):
         return self.token_data.get("access_token")
-    
+
     @property
     def refresh_token(self):
         return self.token_data.get("refresh_token")

@@ -117,6 +117,10 @@ SFDC_CONSUMER_KEY=some_key
 SFDC_CONSUMER_SECRET=secret_stuff
 ```
 
+## django
+
+run migrations and start the server!
+
 ---
 
 This project uses [poetry](https://python-poetry.org/) for dependency management
