@@ -63,6 +63,10 @@ class OAuth:
         return self.token_data.get("refresh_token")
 
     @property
+    def issued_at(self):
+        return self.token_data.get("issued_at")
+
+    @property
     def password(self):
         """
         Not intended to be used other than to feed to the Django user table

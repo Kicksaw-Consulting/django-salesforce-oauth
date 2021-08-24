@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-salesforce-oauth"
-version = "0.3.2"
+version = "0.3.3"
 description = "Simple package for creating and signing users into your Django site using Salesforce as an OAuth provider"
 license = "MIT"
 readme = "README.md"
