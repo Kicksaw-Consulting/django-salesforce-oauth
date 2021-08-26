@@ -76,6 +76,19 @@ CUSTOM_CALLBACK = "path.to.module.your_callback_function"
 1. the request object (useful in case you want to handle redirection yourself)
 2. the OAuth object (contains all token and user data)
 
+If you send the user to the `oauth` view with a query parameter called `state`, then you must
+provide a third, optional argument to your custom callback function.
+
+3. the state parameter. Only requered if you redirect to `oauth` with `?state=value` in your
+   query params.
+
+An example signature is:
+
+```python
+def your_callback_function(request, oauth, state=None):
+    ...
+```
+
 If you do not return a redirect from `your_callback_function`, it's expected it will return
 a user object. In this case the user will then be signed in and redirected to
 `settings.LOGIN_REDIRECT_URL` (which you'll most likely want to set in your `settings.py`).

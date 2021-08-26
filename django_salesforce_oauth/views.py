@@ -13,6 +13,8 @@ from django_salesforce_oauth.utils import get_or_create_user
 
 CALLBACK_ERROR_MESSAGE = "CUSTOM_CALLBACK must return a user object or a redirect"
 
+STATE_COOKIE_NAME = "django_salesforce_oauth_state"
+
 
 def oauth(request, domain="login"):
     """
@@ -25,13 +27,20 @@ def oauth(request, domain="login"):
         "response_type": "code",
         "redirect_uri": settings.OAUTH_REDIRECT_URI,
         "scope": settings.SCOPES,
+        # track whether or not this was a prod org, or a sandbox
+        # this is separate from the state query param the user
+        # may pass to this view.
         "state": domain,
     }
     args = urllib.parse.urlencode(url_args)
 
     url = f"{url}?{args}"
 
-    return redirect(url)
+    response = redirect(url)
+    state = request.GET.get("state")
+    if state:
+        response.set_cookie(STATE_COOKIE_NAME, value=state)
+    return response
 
 
 def oauth_callback(request):
@@ -60,7 +69,11 @@ def oauth_callback(request):
 
     if hasattr(settings, "CUSTOM_CALLBACK"):
         custom_callback = import_string(settings.CUSTOM_CALLBACK)
-        response = custom_callback(request, oauth)
+        state = request.COOKIES.get(STATE_COOKIE_NAME)
+        if state:
+            response = custom_callback(request, oauth, state=state)
+        else:
+            response = custom_callback(request, oauth)
         is_user = type(response) == get_user_model()
         is_redirect = type(response) == HttpResponseRedirect
         assert is_user or is_redirect, CALLBACK_ERROR_MESSAGE
