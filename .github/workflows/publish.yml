@@ -32,7 +32,7 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          notify_when: "failure"
+          notify_when: "failure,success"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           STAGE: " "
